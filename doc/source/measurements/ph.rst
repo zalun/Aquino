@@ -5,7 +5,7 @@ pH
 
 There are few options:
 
- * phDuino?
+ * `phDuino <http://code.google.com/p/phduino/>`_
  * `Oakton pH electrode, general purpose, BNC connector 
    <http://www.coleparmer.com/Product/Oakton_pH_electrode_epoxy_body_sealed_single_junction_general_purpose_3_ft_0_9_m_cable_BNC_connector/EW-35801-00>`_ 
    ($53) [TODO: ask for reading data from device]
