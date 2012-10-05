@@ -1,6 +1,8 @@
 # This is just an example of a daemon which could run to constantly get
 # data from serial and send it to the API
 
+# TODO: find a way to test serial - would be good to simulate all sensors
+
 import serial
 import time
 import json
