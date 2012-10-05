@@ -7,7 +7,8 @@ Welcome to Aquino's documentation!
 ==================================
 
 *Aquino* (which is a development name) is an opensource tool directed to
-measure and control freshwater aquariums.
+measure and control freshwater aquariums. `Fork it on github
+<https://github.com/zalun/Aquino>`_
 
 .. warning::
 
