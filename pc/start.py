@@ -38,13 +38,12 @@ if AQAPI_PROTOCOL:
     kwargs['protocol'] = AQAPI_PROTOCOL
 
 if args.attrs:
-    max_count = int(args.attrs.pop(0))
-if args.attrs:
     kwargs['serial_port'] = args.attrs.pop(0)
 if args.attrs:
     kwargs['threshold'] = int(args.attrs.pop(0))
+if args.attrs:
+    max_count = int(args.attrs.pop(0))
 
 
-print kwargs, max_count
 board = aquino.Aquino(CONSUMER_KEY, CONSUMER_SECRET, **kwargs)
 board.listen(max_count)
