@@ -11,11 +11,11 @@ CONSUMER_SECRET = (environ['CONSUMER_SECRET']
         if 'CONSUMER_SECRET' in environ else 'consumer_secret')
 
 AQAPI_PORT = (environ['AQAPI_PORT']
-        if 'AQAPI_PORT' in environ else 443)
+        if 'AQAPI_PORT' in environ else None)
 AQAPI_DOMAIN = (environ['AQAPI_DOMAIN']
-        if 'AQAPI_DOMAIN' in environ else 'aquino.com')
+        if 'AQAPI_DOMAIN' in environ else None)
 AQAPI_PROTOCOL = (environ['AQAPI_PROTOCOL']
-        if 'AQAPI_PROTOCOL' in environ else 'https')
+        if 'AQAPI_PROTOCOL' in environ else None)
 
 
 parser = argparse.ArgumentParser(description='Command line Marketplace client')
@@ -26,13 +26,25 @@ parser.add_argument('attrs', metavar='attr', type=str, nargs='*',
 
 args = parser.parse_args()
 
+# prepare kwargs
 kwargs = {}
 max_count = None
+
+if AQAPI_PORT:
+    kwargs['port'] = AQAPI_PORT
+if AQAPI_DOMAIN:
+    kwargs['domain'] = AQAPI_DOMAIN
+if AQAPI_PROTOCOL:
+    kwargs['protocol'] = AQAPI_PROTOCOL
+
 if args.attrs:
-    max_count = args.attrs.pop(0)
-    if args.attrs:
-        kwargs['serial_port'] = args.attrs.pop(0)
+    max_count = int(args.attrs.pop(0))
+if args.attrs:
+    kwargs['serial_port'] = args.attrs.pop(0)
+if args.attrs:
+    kwargs['threshold'] = int(args.attrs.pop(0))
 
 
+print kwargs, max_count
 board = aquino.Aquino(CONSUMER_KEY, CONSUMER_SECRET, **kwargs)
 board.listen(max_count)

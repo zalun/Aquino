@@ -4,6 +4,7 @@
 # TODO: find a way to test serial - would be good to simulate all sensors
 
 import serial
+import sys
 import time
 import json
 
@@ -18,7 +19,8 @@ class Aquino:
     collected_data = []
     should_listen = True
 
-    def __init__(self, key, secret, serial_port=PORT, bauds=BAUDS,
+    def __init__(self, consumer_key, consumer_secret,
+            serial_port=PORT, bauds=BAUDS,
             threshold=SEND_THRESHOLD,
             protocol='https://', domain='', port=443):
         """
@@ -35,6 +37,9 @@ class Aquino:
         self.server_time = self.get_server_time()
         # set the time when data was send
         self.send_time = time.time()
+        # save the key and scret for now
+        self.consumer_key = consumer_key
+        self.consumer_secret = consumer_secret
 
     def get_server_time(self):
         return time.time()
@@ -54,13 +59,12 @@ class Aquino:
             del data['seconds']
             prepared_data.append(data)
 
-        data = {"username": username,
-                "token": token,
+        data = {"consumer_key": self.consumer_key,
+                "consumer_secret": self.consumer_secret,
                 "data": prepared_data}
 
         # send data to the server
         # in response receive server's time
-        print "sending data"
         print data
         self.send_time = time.time()
         self.server_time = self.get_server_time()
@@ -102,7 +106,10 @@ class Aquino:
                         counter += 1
                         if counter >= max_count:
                             self.should_listen = False
+                            self.send_collected_data()
                 # If the Arduino sends lots of empty lines, you'll lose the
                 # last filled line, so you could make the above statement conditional
                 # like so: if lines[-2]: last_received = lines[-2]
                 buffer = lines[-1]
+
+        sys.stdout.write("\nListening finished\n\n")
